@@ -45,12 +45,12 @@ td small{display:block;color:var(--mut);font-size:11px;line-height:1.4}.note{fon
 <div class="set" style="margin-top:10px">
 <div><label>پرت و برش (٪)</label><input id="waste" inputmode="decimal" value="0"></div>
 <div><label>ارتفاع آویز از سقف اصلی (سانتی‌متر)</label><input id="drop" inputmode="decimal" value="30"></div>
-<div><label>طول شاخه تی اصلی (متر)</label><input id="mainLen" inputmode="decimal" value="3.6"></div>
+<div><label>طول شاخه سپری اصلی (متر)</label><input id="mainLen" inputmode="decimal" value="3.6"></div>
 <div><label>طول شاخه نبشی دیواری (متر)</label><input id="wallLen" inputmode="decimal" value="3"></div>
 </div></details></div>
 <div class="area" id="area">مساحت کل: ۰ متر مربع</div>
 <div class="card"><table id="out"></table></div>
-<p class="note">این محاسبه تخمینی است: آرایش استاندارد شبکه ۶۰×۶۰ (تی اصلی هر ۱٫۲ متر، آویز هر ۱٫۲ متر روی تی اصلی). برای خرید نهایی، طول شاخه‌های موجود در بازار و جزئیات پروژه (چراغ، دریچه، ستون) را با تأمین‌کننده چک کنید.</p>
+<p class="note">این محاسبه تخمینی است: آرایش استاندارد شبکه ۶۰×۶۰ (سپری اصلی هر ۱٫۲ متر، آویز هر ۱٫۲ متر روی سپری اصلی). برای خرید نهایی، طول شاخه‌های موجود در بازار و جزئیات پروژه (چراغ، دریچه، ستون) را با تأمین‌کننده چک کنید.</p>
 </main>
 <script>
 const fa=n=>Number(n).toLocaleString('fa-IR',{maximumFractionDigits:1});
@@ -65,7 +65,7 @@ function calc(){const wf=1+(parse(document.getElementById('waste').value)||0)/10
 rooms.forEach(r=>{let L=parse(r.l),W=parse(r.w);if(!L||!W)return;const k=Math.max(1,Math.floor(parse(r.n))||1);const x={a:L,b:W,n:c(W/1.2)},y={a:W,b:L,n:c(L/1.2)};const best=(y.n*y.a<x.n*x.a)?y:x;L=best.a;W=best.b;const lines=best.n;area+=L*W*k;tiles+=c(L*W*wf/0.36)*k;for(let j=0;j<k;j++)segs.push(L*W*wf*0.81);c12+=Math.max(0,c(L/.6)-1)*lines;c06+=c(L/.6)*lines;per+=2*(L+W)*k;hang+=lines*c(L/1.2)*k});
 const pack=(list,len)=>{let p=0;const rem=[],free=[];list.forEach(s=>{const n=Math.floor(s/len+1e-9);p+=n;const q=s-n*len;if(q>0.001)rem.push(q)});rem.sort((a,b)=>b-a).forEach(q=>{const k=free.findIndex(f=>f>=q-1e-9);if(k>=0)free[k]-=q;else{free.push(len-q);p++}});return p};
 const mainPieces=pack(segs,mainLen),wallPieces=c(per*wf/wallLen);document.getElementById('area').textContent='مساحت کل: '+fa(area)+' متر مربع';
-const rows=area? [['کاشی ۶۰×۶۰',tiles,'عدد','مساحت هر اتاق ÷ ۰٫۳۶، رو به بالا، بدون انتقال اضافه'],['تی اصلی',mainPieces,'شاخه','شاخه '+fa(mainLen)+' متری، باقی‌مانده هر شاخه بین اتاق‌ها مصرف می‌شود'],['تی ۱۲۰ (کراس)',c(area*wf*1.35),'عدد','مساحت × ۱٫۳۵'],['تی ۶۰ (کراس)',c(area*wf*1.35),'عدد','مساحت × ۱٫۳۵'],['نبشی دیواری',wallPieces,'شاخه','شاخه '+fa(wallLen)+' متری، محیط '+fa(per)+' متر'],['آویز',c(hang*wf),'عدد','طول هر آویز حدود '+fa(drop+0.15)+' متر (ارتفاع + ۱۵ سانت)'],['سیم/میل‌گرد آویز (مجموع)',c(hang*wf*(drop+0.15)),'متر',''],['رول‌پلاک و میخ/پیچ',c((hang+per/0.5)*wf),'عدد','آویز + نبشی هر ۵۰ سانت']]:[];
+const rows=area? [['کاشی ۶۰×۶۰',tiles,'عدد','مساحت هر اتاق ÷ ۰٫۳۶، رو به بالا، بدون انتقال اضافه'],['سپری '+fa(mainLen),mainPieces,'شاخه','شاخه '+fa(mainLen)+' متری، باقی‌مانده هر شاخه بین اتاق‌ها مصرف می‌شود'],['سپری ۱٫۲۰ (کراس)',c(area*wf*1.35),'عدد','مساحت × ۱٫۳۵'],['سپری ۰٫۶۰ (کراس)',c(area*wf*1.35),'عدد','مساحت × ۱٫۳۵'],['نبشی دیواری',wallPieces,'شاخه','شاخه '+fa(wallLen)+' متری، محیط '+fa(per)+' متر'],['آویز',c(hang*wf),'عدد','طول هر آویز حدود '+fa(drop+0.15)+' متر (ارتفاع + ۱۵ سانت)'],['سیم/میل‌گرد آویز (مجموع)',c(hang*wf*(drop+0.15)),'متر',''],['رول‌پلاک و میخ/پیچ',c((hang+per/0.5)*wf),'عدد','آویز + نبشی هر ۵۰ سانت']]:[];
 document.getElementById('out').innerHTML=rows.length?rows.map(r=>`<tr><td>${r[0]}<small>${r[3]}</small></td><td class="n">${fa(r[1])} <span style="font-weight:400;font-size:12px;color:var(--mut)">${r[2]}</span></td></tr>`).join(''):'<tr><td style="color:var(--mut)">ابعاد اتاق را وارد کنید تا لیست متریال نمایش داده شود.</td></tr>'}
 draw();calc();
 let deferredPrompt;const installBtn=document.getElementById('install');
