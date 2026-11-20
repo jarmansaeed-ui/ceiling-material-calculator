@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f6e56">
+<meta name="description" content="محاسبه متریال سقف کاذب ۶۰ در ۶۰">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>محاسبه متریال سقف کاذب ۶۰×۶۰</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f6f5f1;--card:#fff;--tx:#1d1d1b;--mut:#6b6a64;--bd:#e2e0d8;--ac:#0f6e56;--acbg:#e1f3ec;--wr:#b4540a}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161614;--card:#222220;--tx:#f0efe9;--mut:#a3a29a;--bd:#38372f;--ac:#5dcaa5;--acbg:#16322a;--wr:#f0a05a}}
+:root[data-theme="dark"]{--bg:#161614;--card:#222220;--tx:#f0efe9;--mut:#a3a29a;--bd:#38372f;--ac:#5dcaa5;--acbg:#16322a;--wr:#f0a05a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Vazirmatn,Tahoma,sans-serif;line-height:1.7}
+main{max-width:560px;margin:0 auto;padding:16px}
+h1{font-size:20px;margin:8px 0 2px}.sub{color:var(--mut);font-size:13px;margin:0 0 14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
+.room{display:grid;grid-template-columns:1fr 1fr 70px auto;gap:8px;align-items:end;margin-bottom:8px}
+label{display:block;font-size:12px;color:var(--mut);margin-bottom:2px}
+input{width:100%;font:inherit;font-size:16px;padding:9px 10px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);direction:ltr;text-align:center}
+input:focus{outline:2px solid var(--ac);border-color:transparent}
+button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:9px 12px}
+button.del{color:var(--wr);padding:9px 11px}button.add{width:100%;border-style:dashed;color:var(--ac);font-weight:600}
+.set{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+details summary{cursor:pointer;font-weight:600;font-size:14px}
+.area{background:var(--acbg);color:var(--ac);border-radius:10px;padding:8px 12px;font-weight:600;font-size:14px;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:14px}td{padding:9px 4px;border-bottom:1px solid var(--bd)}tr:last-child td{border-bottom:0}
+td.n{text-align:left;font-weight:700;font-size:17px;color:var(--ac);white-space:nowrap}
+td small{display:block;color:var(--mut);font-size:11px;line-height:1.4}.note{font-size:12px;color:var(--mut)}
+.install{display:none;width:100%;margin:0 0 12px;background:var(--ac);color:white;border-color:var(--ac);font-weight:700}
+@media(max-width:380px){main{padding:12px}.room{grid-template-columns:1fr 1fr 56px auto;gap:5px}.card{padding:11px}}
+</style>
+</head>
+<body>
+<main>
+<h1>محاسبه متریال سقف کاذب ۶۰×۶۰</h1>
+<p class="sub">ابعاد اتاق را به متر وارد کنید (مثلاً ۴٫۵). می‌توانید چند اتاق اضافه کنید.</p>
+<button class="install" id="install">نصب برنامه روی گوشی</button>
+<div class="card" id="rooms"></div>
+<button class="add" id="add">+ افزودن اتاق</button>
+<div class="card" style="margin-top:12px">
+<details><summary>تنظیمات (قابل تغییر)</summary>
+<div class="set" style="margin-top:10px">
+<div><label>پرت و برش (٪)</label><input id="waste" inputmode="decimal" value="0"></div>
+<div><label>ارتفاع آویز از سقف اصلی (سانتی‌متر)</label><input id="drop" inputmode="decimal" value="30"></div>
+<div><label>طول شاخه تی اصلی (متر)</label><input id="mainLen" inputmode="decimal" value="3.6"></div>
+<div><label>طول شاخه نبشی دیواری (متر)</label><input id="wallLen" inputmode="decimal" value="3"></div>
+</div></details></div>
+<div class="area" id="area">مساحت کل: ۰ متر مربع</div>
+<div class="card"><table id="out"></table></div>
+<p class="note">این محاسبه تخمینی است: آرایش استاندارد شبکه ۶۰×۶۰ (تی اصلی هر ۱٫۲ متر، آویز هر ۱٫۲ متر روی تی اصلی). برای خرید نهایی، طول شاخه‌های موجود در بازار و جزئیات پروژه (چراغ، دریچه، ستون) را با تأمین‌کننده چک کنید.</p>
+</main>
+<script>
+const fa=n=>Number(n).toLocaleString('fa-IR',{maximumFractionDigits:1});
+const parse=s=>{s=String(s).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[٫,\/]/g,'.');const v=parseFloat(s);return isFinite(v)&&v>0?v:0};
+const c=x=>Math.ceil(x-1e-9);let rooms=[{l:'',w:'',n:'1'}];const box=document.getElementById('rooms');
+function draw(){box.innerHTML='';rooms.forEach((r,i)=>{const d=document.createElement('div');d.className='room';d.innerHTML=`<div><label>طول اتاق ${rooms.length>1?(i+1):''} (متر)</label><input inputmode="decimal" data-i="${i}" data-k="l" value="${r.l}" placeholder="0"></div><div><label>عرض (متر)</label><input inputmode="decimal" data-i="${i}" data-k="w" value="${r.w}" placeholder="0"></div><div><label>تعداد</label><input inputmode="numeric" data-i="${i}" data-k="n" value="${r.n||1}"></div>${rooms.length>1?`<button class="del" data-del="${i}" aria-label="حذف">✕</button>`:'<span></span>'}`;box.appendChild(d)})}
+box.addEventListener('input',e=>{const t=e.target;if(t.dataset.k){rooms[t.dataset.i][t.dataset.k]=t.value;calc()}});
+box.addEventListener('click',e=>{const i=e.target.dataset.del;if(i!==undefined){rooms.splice(+i,1);draw();calc()}});
+document.getElementById('add').onclick=()=>{rooms.push({l:'',w:'',n:'1'});draw()};
+['waste','drop','mainLen','wallLen'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+function calc(){const wf=1+(parse(document.getElementById('waste').value)||0)/100;const drop=(parse(document.getElementById('drop').value)||0)/100;const mainLen=parse(document.getElementById('mainLen').value)||3.6;const wallLen=parse(document.getElementById('wallLen').value)||3;let area=0,tiles=0,c12=0,c06=0,per=0,hang=0;const segs=[];
+rooms.forEach(r=>{let L=parse(r.l),W=parse(r.w);if(!L||!W)return;const k=Math.max(1,Math.floor(parse(r.n))||1);const x={a:L,b:W,n:c(W/1.2)},y={a:W,b:L,n:c(L/1.2)};const best=(y.n*y.a<x.n*x.a)?y:x;L=best.a;W=best.b;const lines=best.n;area+=L*W*k;tiles+=c(L*W*wf/0.36)*k;for(let j=0;j<k;j++)segs.push(L*W*wf*0.81);c12+=Math.max(0,c(L/.6)-1)*lines;c06+=c(L/.6)*lines;per+=2*(L+W)*k;hang+=lines*c(L/1.2)*k});
+const pack=(list,len)=>{let p=0;const rem=[],free=[];list.forEach(s=>{const n=Math.floor(s/len+1e-9);p+=n;const q=s-n*len;if(q>0.001)rem.push(q)});rem.sort((a,b)=>b-a).forEach(q=>{const k=free.findIndex(f=>f>=q-1e-9);if(k>=0)free[k]-=q;else{free.push(len-q);p++}});return p};
+const mainPieces=pack(segs,mainLen),wallPieces=c(per*wf/wallLen);document.getElementById('area').textContent='مساحت کل: '+fa(area)+' متر مربع';
+const rows=area? [['کاشی ۶۰×۶۰',tiles,'عدد','مساحت هر اتاق ÷ ۰٫۳۶، رو به بالا، بدون انتقال اضافه'],['تی اصلی',mainPieces,'شاخه','شاخه '+fa(mainLen)+' متری، باقی‌مانده هر شاخه بین اتاق‌ها مصرف می‌شود'],['تی ۱۲۰ (کراس)',c(area*wf*1.35),'عدد','مساحت × ۱٫۳۵'],['تی ۶۰ (کراس)',c(area*wf*1.35),'عدد','مساحت × ۱٫۳۵'],['نبشی دیواری',wallPieces,'شاخه','شاخه '+fa(wallLen)+' متری، محیط '+fa(per)+' متر'],['آویز',c(hang*wf),'عدد','طول هر آویز حدود '+fa(drop+0.15)+' متر (ارتفاع + ۱۵ سانت)'],['سیم/میل‌گرد آویز (مجموع)',c(hang*wf*(drop+0.15)),'متر',''],['رول‌پلاک و میخ/پیچ',c((hang+per/0.5)*wf),'عدد','آویز + نبشی هر ۵۰ سانت']]:[];
+document.getElementById('out').innerHTML=rows.length?rows.map(r=>`<tr><td>${r[0]}<small>${r[3]}</small></td><td class="n">${fa(r[1])} <span style="font-weight:400;font-size:12px;color:var(--mut)">${r[2]}</span></td></tr>`).join(''):'<tr><td style="color:var(--mut)">ابعاد اتاق را وارد کنید تا لیست متریال نمایش داده شود.</td></tr>'}
+draw();calc();
+let deferredPrompt;const installBtn=document.getElementById('install');
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;installBtn.style.display='block'});
+installBtn.onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installBtn.style.display='none'};
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
+</script>
+</body>
+</html>

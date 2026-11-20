@@ -1,0 +1,16 @@
+{
+  "name": "محاسبه متریال سقف کاذب ۶۰×۶۰",
+  "short_name": "محاسبه سقف",
+  "description": "محاسبه متریال سقف کاذب ۶۰×۶۰",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f5f1",
+  "theme_color": "#0f6e56",
+  "orientation": "portrait",
+  "lang": "fa",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"}
+  ]
+}
